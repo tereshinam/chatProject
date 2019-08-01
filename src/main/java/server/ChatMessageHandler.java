@@ -20,7 +20,7 @@ public class ChatMessageHandler {
         else
             if(message.startsWith("/hist")){
                 type = CommandType.HIST;
-                initialMessage = message.substring(5);
+                initialMessage = "";//message.substring(5);
             }
             else
                 if(message.startsWith("/child")) {
@@ -34,5 +34,8 @@ public class ChatMessageHandler {
 
     public String getInfoMessage(){
         return userName + " : "+ time + " : " + initialMessage;
+    }
+    public CommandType getType(){
+        return type;
     }
 }

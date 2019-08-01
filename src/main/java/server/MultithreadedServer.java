@@ -82,19 +82,42 @@ class Session extends Thread {
             try {
                 //String message = in.readLine();
                 ChatMessageHandler messageHandler = new ChatMessageHandler(in.readLine());
-                MultithreadedServer.logger.log(messageHandler.getInfoMessage());
-                for (Session session : sessionStorage.getSessions()) {
-                    BufferedWriter out = getClientOutBuffer(session.getClient());
-                    out.write(">>> " + messageHandler.getInfoMessage());
-                    out.newLine();
-                    out.flush();
+                switch (messageHandler.getType()){
+                    case SND:
+                        MultithreadedServer.logger.log(messageHandler.getInfoMessage());
+                        for (Session session : sessionStorage.getSessions()) {
+                            BufferedWriter out = getClientOutBuffer(session.getClient());
+                            out.write(">>> " + messageHandler.getInfoMessage());
+                            out.newLine();
+                            out.flush();
 //                sessionStorage.getSessions().forEach(session -> {
 //                    BufferedWriter out = getClientOutBuffer(session.getClient());
 //                    String message = in.readLine();
 //                    out.write(">>> " + message);
 //                    out.newLine();
 //                    out.flush();
+                        }
+                        break;
+                    case HIST:
+                        out = new BufferedWriter(
+                                new OutputStreamWriter(
+                                        new BufferedOutputStream(
+                                                client.getOutputStream())));
+                        out.write(MultithreadedServer.logger.getHistory());
+                        out.newLine();
+                        out.flush();
+                        break;
+                    case NONE:
+                        out = new BufferedWriter(
+                                new OutputStreamWriter(
+                                        new BufferedOutputStream(
+                                                client.getOutputStream())));
+                        out.write("Not a command");
+                        out.newLine();
+                        out.flush();
+                        break;
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
