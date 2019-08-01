@@ -5,8 +5,8 @@ import java.net.Socket;
 
 public class Client {
     public static void main(String[] args) {
-        try(final Socket server = new Socket("localhost", 666)) {
-
+        //try(final Socket server = new Socket("192.168.8.121", 666)) {
+        try (final Socket server = new Socket("localhost", 666)) {
             try (final BufferedReader in =
                          new BufferedReader(
                                  new InputStreamReader(
@@ -25,7 +25,7 @@ public class Client {
                                                      System.in)))) {
 
                     while (true) {
-                        out.write(">>> " + console.readLine());
+                        out.write(console.readLine());
                         out.newLine();
                         out.flush();
                         System.out.println(in.readLine());
