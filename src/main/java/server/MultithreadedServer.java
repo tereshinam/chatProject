@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class MultithreadedServer {
-
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(666);
 
@@ -30,6 +29,16 @@ class Session extends Thread {
     private BufferedReader in;
     private BufferedWriter out;
     private SessionStorage sessionStorage;
+    private static HistoryLog logger;
+
+    static {
+        try {
+            logger = new HistoryLog();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public Session(Socket client) throws IOException {
         this.client = client;
@@ -60,10 +69,12 @@ class Session extends Thread {
     public void run() {
         while (true) {
             try {
-                String message = in.readLine();
+                //String message = in.readLine();
+                ChatMessageHandler messageHandler = new ChatMessageHandler(in.readLine());
+                logger.log(messageHandler.getInfoMessage());
                 for (Session session : sessionStorage.getSessions()) {
                     BufferedWriter out = getClientOutBuffer(session.getClient());
-                    out.write(">>> " + message);
+                    out.write(">>> " + messageHandler.getInfoMessage());
                     out.newLine();
                     out.flush();
 //                sessionStorage.getSessions().forEach(session -> {
