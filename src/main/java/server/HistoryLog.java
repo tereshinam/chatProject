@@ -40,7 +40,7 @@ public class HistoryLog {
             StringBuffer history = new StringBuffer("");
             String line = in.readLine();
             while(line != null){
-               history.append(line+ System.lineSeparator());
+               history.append(line);
                line = in.readLine();
             }
             return history.toString();
