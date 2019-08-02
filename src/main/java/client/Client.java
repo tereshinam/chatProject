@@ -2,10 +2,12 @@ package client;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class Client {
     public static void main(String[] args) {
-        //try(final Socket server = new Socket("192.168.8.121", 666)) {
         try (final Socket server = new Socket("localhost", 666)) {
             try (final BufferedReader in =
                          new BufferedReader(
@@ -28,7 +30,16 @@ public class Client {
                         out.write(console.readLine());
                         out.newLine();
                         out.flush();
-                        System.out.println(in.readLine());
+                        String line = in.readLine();
+                        //String line1 = in.readLine();
+                        //Stream<String> lines = in.lines();
+                        //Object[] linesArray = lines.toArray();
+                        while (!line.equals("")) {
+                        //for(Object line: linesArray) {
+                             System.out.println(line);
+                        //}
+                              line = in.readLine();
+                        }
                     }
 
                 }

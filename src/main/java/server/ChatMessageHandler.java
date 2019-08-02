@@ -1,6 +1,5 @@
 package server;
 
-import static org.mockito.Matchers.startsWith;
 import java.sql.Timestamp;
 /**
  * Created by Java_1 on 01.08.2019.
@@ -15,7 +14,7 @@ public class ChatMessageHandler {
         boolean isSnd = message.startsWith("/snd");
         if(isSnd){
             type = CommandType.SND;
-            initialMessage = message.substring(4);
+            initialMessage = ">>> " + message.substring(4);
         }
         else
             if(message.startsWith("/hist")){
@@ -27,8 +26,10 @@ public class ChatMessageHandler {
                 type = CommandType.CHILD;
                 userName =  message.substring(6);
                 }
-                else
+                else {
                     type = CommandType.NONE;
+                    initialMessage = "Not a command";
+                }
 
     }
 
@@ -39,6 +40,12 @@ public class ChatMessageHandler {
         return getInfoMessage();
     }
 
+    public String getName(){
+        return userName;
+    }
+    public void setName(String name){
+        userName = name;
+    }
     public String getInfoMessage(){
         return userName + " : "+ time + " : " + initialMessage;
     }
