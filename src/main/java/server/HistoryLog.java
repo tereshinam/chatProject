@@ -13,7 +13,7 @@ public class HistoryLog {
     private BufferedWriter out;
     private BufferedReader in;
     public HistoryLog() throws IOException {
-        path = new File("target", "history.txt");
+        path = new File("history.txt");
         path.createNewFile();
         //fileWriter = new FileWriter("history.txt", true );
         //fileReader = new FileReader("history.txt");
@@ -21,7 +21,7 @@ public class HistoryLog {
                 new OutputStreamWriter(
                         new BufferedOutputStream(
                                 new FileOutputStream(
-                                        path), 450)));
+                                        path, true), 450)));
         in = new BufferedReader(
                 new InputStreamReader(
                         new BufferedInputStream(

@@ -17,7 +17,7 @@ public class ChatMessageHandler {
         boolean isSnd = message.startsWith("/snd");
         if (isSnd) {
             type = CommandType.SND;
-            initialMessage = ">>> " + message.substring(4);
+            initialMessage = message.substring(4);
         } else if (message.startsWith("/hist")) {
             type = CommandType.HIST;
             initialMessage = "";
@@ -30,29 +30,34 @@ public class ChatMessageHandler {
         } else if (message.startsWith("/writer")) {
             type = CommandType.WRITER;
             userId = Integer.parseInt(message.substring(7));
-        } else
+        } else {
             type = CommandType.NONE;
             initialMessage = "Not a command";
-
-
-    }
-
-    public String toString(){
-        if(type == CommandType.HIST){
-            return MultithreadedServer.logger.getHistory();
         }
-        return getInfoMessage();
+
     }
 
-    public String getName(){
+    public String toString() {
+        switch(type) {
+            case HIST:
+                return MultithreadedServer.logger.getHistory();
+            case CHILD:
+                return "Set name: " + userName;
+            default:
+                return getInfoMessage();
+        }
+    }
+
+    public String getName() {
         return userName;
     }
-    public void setName(String name){
+
+    public void setName(String name) {
         userName = name;
     }
 
     public String getInfoMessage() {
-        return userName + " : " + time + " : " + initialMessage;
+        return ">>> "+ userName + " : " + time + " : " + initialMessage;
     }
 
     public CommandType getType() {

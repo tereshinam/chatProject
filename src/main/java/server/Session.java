@@ -3,6 +3,7 @@ package server;
 import java.io.*;
 import java.net.Socket;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 class Session extends Thread {
     private Socket client;
@@ -83,18 +84,21 @@ class Session extends Thread {
     public void run() {
         while (true) {
             try {
-                //String message = in.readLine();
                 ChatMessageHandler messageHandler = new ChatMessageHandler(in.readLine());
+                LinkedList<Session> list = new LinkedList<>();
+                list.add(this);
                 switch (messageHandler.getType()){
                     case SND:
+                        messageHandler.setName(username);
                         broadcast(messageHandler);
                         logger.log(messageHandler.getInfoMessage());
                         break;
                     case HIST:
-                        unicast(sessionStorage.getSessions().iterator() , messageHandler);
+                        unicast(list.iterator(), messageHandler);
                         break;
                     case CHILD:
-                        messageHandler.getName();
+                        username = messageHandler.getName();
+                        unicast(list.iterator(), messageHandler);
                         break;
                     case READER:
                         isReader = true;
@@ -105,7 +109,7 @@ class Session extends Thread {
                         clientId = messageHandler.getUserId();
                         break;
                     default:
-                        unicast(sessionStorage.getSessions().iterator() , messageHandler);
+                        unicast(list.iterator(), messageHandler);
                         break;
                 }
             } catch (Exception e) {
