@@ -56,4 +56,8 @@ public class HistoryLog {
 
     }
 
+    public File getPath(){
+        return path;
+    }
+
 }

@@ -20,7 +20,7 @@ public class ChatMessageHandler {
         else
             if(message.startsWith("/hist")){
                 type = CommandType.HIST;
-                initialMessage = "";//message.substring(5);
+                initialMessage = "";
             }
             else
                 if(message.startsWith("/child")) {
@@ -30,6 +30,13 @@ public class ChatMessageHandler {
                 else
                     type = CommandType.NONE;
 
+    }
+
+    public String toString(){
+        if(type == CommandType.HIST){
+            return MultithreadedServer.logger.getHistory();
+        }
+        return getInfoMessage();
     }
 
     public String getInfoMessage(){
