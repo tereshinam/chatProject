@@ -5,7 +5,6 @@ import java.net.Socket;
 
 public class Client {
     public static void main(String[] args) {
-        //try(final Socket server = new Socket("192.168.8.121", 666)) {
         try (final Socket server = new Socket("localhost", 666)) {
             try (final BufferedReader in =
                          new BufferedReader(

@@ -1,15 +1,15 @@
 package server;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class SessionStorage {
-    private List<Session> sessionList = new ArrayList<>();
+    private Collection<Session> sessionList =  new LinkedList<>();
 
     private SessionStorage() {
+        //Collection<Session> sessionList = new LinkedList<>();
     }
 
-    public List<Session> getSessions() {
+    public Collection<Session> getSessions() {
         return sessionList;
     }
 
