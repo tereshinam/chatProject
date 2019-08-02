@@ -1,0 +1,1 @@
+java -cp ./target -classpath ./target/classes client.Client
