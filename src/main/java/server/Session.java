@@ -10,6 +10,8 @@ class Session extends Thread {
     private BufferedWriter out;
     private SessionStorage sessionStorage;
     private String username = "Anonymous";
+    private int clientId;
+    private boolean isReader;
     private static HistoryLog logger;
 
     public String getUsername() {
@@ -54,9 +56,15 @@ class Session extends Thread {
         Session session = sessionIterator.next();
         try {
             BufferedWriter out = getClientOutBuffer(session.getClient());
-            out.write(">>> " + messageHandler.getInfoMessage());
-            out.newLine();
-            out.flush();
+            //String message = messageHandler.toString();
+            //String[] lineOfMessage = message.split("\n");
+            //for(String line: lineOfMessage) {
+                out.write(messageHandler.toString());
+                out.newLine();
+                out.write("");
+                out.newLine();
+                out.flush();
+            //}
         } catch (Exception e) {
             sessionIterator.remove();
         }
@@ -79,19 +87,27 @@ class Session extends Thread {
                 ChatMessageHandler messageHandler = new ChatMessageHandler(in.readLine());
                 switch (messageHandler.getType()){
                     case SND:
-                        MultithreadedServer.logger.log(messageHandler.getInfoMessage());
                         broadcast(messageHandler);
+                        logger.log(messageHandler.getInfoMessage());
                         break;
                     case HIST:
-                        broadcast(messageHandler);
+                        unicast(sessionStorage.getSessions().iterator() , messageHandler);
                         break;
-                    case NONE:
-                        broadcast(messageHandler);
+                    case CHILD:
+                        messageHandler.getName();
+                        break;
+                    case READER:
+                        isReader = true;
+                        clientId = messageHandler.getUserId();
+                        break;
+                    case WRITER:
+                        isReader = false;
+                        clientId = messageHandler.getUserId();
+                        break;
+                    default:
+                        unicast(sessionStorage.getSessions().iterator() , messageHandler);
                         break;
                 }
-
-                logger.log(messageHandler.getInfoMessage());
-                broadcast(messageHandler);
             } catch (Exception e) {
 
             }

@@ -8,11 +8,15 @@ import java.security.PublicKey;
  */
 public class HistoryLog {
     private File path;
+    private FileWriter fileWriter;
+    private FileReader fileReader;
     private BufferedWriter out;
     private BufferedReader in;
     public HistoryLog() throws IOException {
         path = new File("target", "history.txt");
         path.createNewFile();
+        //fileWriter = new FileWriter("history.txt", true );
+        //fileReader = new FileReader("history.txt");
         out = new BufferedWriter(
                 new OutputStreamWriter(
                         new BufferedOutputStream(
@@ -40,7 +44,7 @@ public class HistoryLog {
             StringBuffer history = new StringBuffer("");
             String line = in.readLine();
             while(line != null){
-               history.append(line);
+               history.append(line).append("\n");
                line = in.readLine();
             }
             return history.toString();
@@ -54,6 +58,10 @@ public class HistoryLog {
         out.close();
         in.close();
 
+    }
+
+    public File getPath(){
+        return path;
     }
 
 }
