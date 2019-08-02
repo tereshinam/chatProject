@@ -17,6 +17,7 @@ public class MultithreadedServer {
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(666);
 
@@ -32,9 +33,10 @@ public class MultithreadedServer {
                 }
             }
         }).start();
-        new Thread(()->{
+        new Thread(() -> {
             try {
-                while(Thread.activeCount()>1){}
+                while (Thread.activeCount() > 1) {
+                }
                 logger.closeFile();
             } catch (IOException e) {
                 e.printStackTrace();

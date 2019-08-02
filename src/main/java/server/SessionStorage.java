@@ -13,6 +13,10 @@ public class SessionStorage {
         return sessionList;
     }
 
+    public Collection<Session> getWriterSessions() {
+        getSessions().
+    }
+
     public void addSession(Session session) {
         sessionList.add(session);
     }

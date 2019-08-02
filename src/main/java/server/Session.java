@@ -10,6 +10,8 @@ class Session extends Thread {
     private BufferedWriter out;
     private SessionStorage sessionStorage;
     private String username = "Anonymous";
+    private int clientId;
+    private boolean isReader;
     private static HistoryLog logger;
 
     public String getUsername() {
@@ -93,6 +95,14 @@ class Session extends Thread {
                         break;
                     case CHILD:
                         messageHandler.getName();
+                        break;
+                    case READER:
+                        isReader = true;
+                        clientId = messageHandler.getUserId();
+                        break;
+                    case WRITER:
+                        isReader = false;
+                        clientId = messageHandler.getUserId();
                         break;
                     default:
                         unicast(sessionStorage.getSessions().iterator() , messageHandler);

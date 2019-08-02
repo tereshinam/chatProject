@@ -7,6 +7,8 @@ public enum CommandType {
     SND,
     HIST,
     CHILD,
+    READER,
+    WRITER,
     NONE;
 
 }
