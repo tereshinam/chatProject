@@ -7,7 +7,6 @@ import java.util.Iterator;
 class Session extends Thread {
     private Socket client;
     private BufferedReader in;
-    private BufferedWriter out;
     private SessionStorage sessionStorage;
     private String username = "Anonymous";
     private int clientId;
@@ -16,6 +15,10 @@ class Session extends Thread {
 
     public String getUsername() {
         return username;
+    }
+
+    public boolean isReader() {
+        return isReader;
     }
 
     public void setUsername(String username) {
@@ -66,7 +69,7 @@ class Session extends Thread {
 
     private void broadcast(ChatMessageHandler messageHandler) {
         synchronized (this) {
-            Iterator<Session> sessionIterator = sessionStorage.getSessions().iterator();
+            Iterator<Session> sessionIterator = sessionStorage.getWriterSessions().iterator();
             while (sessionIterator.hasNext()) {
                 unicast(sessionIterator, messageHandler);
             }
@@ -77,9 +80,8 @@ class Session extends Thread {
     public void run() {
         while (true) {
             try {
-                //String message = in.readLine();
                 ChatMessageHandler messageHandler = new ChatMessageHandler(in.readLine());
-                switch (messageHandler.getType()){
+                switch (messageHandler.getType()) {
                     case SND:
                         MultithreadedServer.logger.log(messageHandler.getInfoMessage());
                         broadcast(messageHandler);
@@ -103,7 +105,7 @@ class Session extends Thread {
                 logger.log(messageHandler.getInfoMessage());
                 broadcast(messageHandler);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
     }

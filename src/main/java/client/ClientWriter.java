@@ -21,11 +21,14 @@ public class ClientWriter {
                                  new OutputStreamWriter(
                                          new BufferedOutputStream(
                                                  server.getOutputStream(), 100)))) {
+                out.flush();
                 out.write("/writer " + args[0]);
+                out.newLine();
                 while (true) {
                     String line;
                     while ((line = in.readLine()) != null) {
                         consoleOut.write(line);
+                        consoleOut.newLine();
                         consoleOut.flush();
                     }
                 }

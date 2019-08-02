@@ -26,10 +26,10 @@ public class ChatMessageHandler {
             userName = message.substring(6);
         } else if (message.startsWith("/reader")) {
             type = CommandType.READER;
-            userId = Integer.parseInt(message.substring(7));
+            userId = Integer.parseInt(message.substring(8));
         } else if (message.startsWith("/writer")) {
             type = CommandType.WRITER;
-            userId = Integer.parseInt(message.substring(7));
+            userId = Integer.parseInt(message.substring(8));
         } else
             type = CommandType.NONE;
 

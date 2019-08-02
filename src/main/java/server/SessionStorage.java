@@ -1,12 +1,12 @@
 package server;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SessionStorage {
-    private Collection<Session> sessionList =  new LinkedList<>();
+    private Collection<Session> sessionList = new LinkedList<>();
 
     private SessionStorage() {
-        //Collection<Session> sessionList = new LinkedList<>();
     }
 
     public Collection<Session> getSessions() {
@@ -14,7 +14,9 @@ public class SessionStorage {
     }
 
     public Collection<Session> getWriterSessions() {
-        getSessions().
+        return getSessions().stream()
+                .filter(stream -> !stream.isReader())
+                .collect(Collectors.toList());
     }
 
     public void addSession(Session session) {
